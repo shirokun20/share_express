@@ -1,0 +1,26 @@
+// express
+var express = require('express');
+// Dibuka didalamnya
+var app = express();
+// Port
+var port = process.env.PORT || 3000;
+// Body Parser
+var bodyParser = require('body-parser');
+// Cors
+var cors = require('cors');
+// menerima urlencoded
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+// dipakai
+app.use(bodyParser.json());
+// Corsnya
+app.use(cors());// haha
+//routenya
+app.use(express.static('public'));
+
+var routes = require('./routes');
+routes(app); 
+// output nya we
+app.listen(port);
+console.log(`Berjalan di port: ${ port }`);
