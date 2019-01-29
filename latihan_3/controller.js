@@ -7,68 +7,101 @@ var fs = require('fs');
 var path = require('path');
 // Mengambil data
 exports.uploads = (req, res) => {
-    qb.get('tuplod', (err, output) => {
+    qb.get('tupload', (err, output) => {
         if (err) {
             response.err({
                 message: 'terjadi error'
             }, res);
         } else {
-            response.ok(output, res);
+            if (output.length > 1) {
+                response.ok(output, res);
+            } else {
+                response.err({
+                    message: 'Tidak ada data.'
+                }, res);
+            }
         }
     })
 }
-exports.findUsers = (req, res) => {
+exports.findUpload = (req, res) => {
     qb.where({
-        id: req.params.user_id
-    }).get('person', (err, output) => {
+        id: req.params.tid
+    }).get('tupload', (err, output) => {
         if (err) {
             response.err({
                 message: err
             }, res);
         } else {
-            response.ok(output, res);
+            if (output.length > 1) {
+                response.ok(output, res);
+            } else {
+                response.err({
+                    message: 'Tidak ada data.'
+                }, res);
+            }
         }
     });
 }
-// exports.updateUser = (req, res) => {
-//  const {error} = validasi(req.body);
-//     if (error) return response.err({
-//                 message: error.details[0].message
-//             }, res);
-//     var data = {
-//         first_name: req.body.first_name,
-//         last_name: req.body.last_name,
-//     };
-//     var whereNya = {
-//         id: req.params.user_id
-//     };
-//     qb.where(whereNya).update('person', data, (err, output) => {
-//         if (err) {
-//             response.err({
-//                 message: err
-//             }, res);
-//         } else {
-//             var {
-//                 affectedRows
-//             } = output;
-//             if (affectedRows == 1) {
-//                 var hasil = {
-//                     message: "Berhasil mengubah person",
-//                 }
-//                 response.ok(hasil, res);
-//             } else {
-//                 var hasil = {
-//                     message: "Gagal mengubah person",
-//                 }
-//                 response.err(hasil, res);
-//             }
-//         }
-//     });
-// }
+exports.updateUpload = (req, res) => {
+    if (req.file != null) {
+        qb.where({
+            'id': req.params.tid
+        }).get('tupload', (err, output) => {
+            if (err) {
+                response.err({
+                    message: err
+                }, res);
+            } else {
+                if (output.length >= 1) {
+                    // console.log(output[0].image);
+                    if (fs.existsSync(path.join(__dirname + '/public/images/' + output[0].image))) {
+                        fs.unlink(path.join(__dirname + '/public/images/' + output[0].image));
+                    }
+                    var where = {
+                        'id': req.params.tid
+                    }
+                    var data = {
+                        image: req.file.filename,
+                    };
+                    qb.where(where).update('tupload', data, (errNya, output) => {
+                        if (errNya) {
+                            response.err({
+                                message: errNya
+                            }, res);
+                        } else {
+                            var {
+                                affectedRows
+                            } = output;
+                            if (affectedRows == 1) {
+                                var hasil = {
+                                    message: "Berhasil mengubah T Upload",
+                                }
+                                response.ok(hasil, res);
+                            } else {
+                                var hasil = {
+                                    message: "Gagal mengubah T Upload",
+                                }
+                                response.err(hasil, res);
+                            }
+                        }
+                    });
+                } else {
+                    response.err({
+                        message: 'Gagal mengubah T Upload'
+                    }, res);
+                }
+            }
+        });
+    } else {
+        response.err({
+            message: "Gagal mengubah T Uploads"
+        }, res);
+    }
+}
 exports.deleteUpload = (req, res) => {
     qb.where({
         'id': req.params.tid
-    }).get('tuplod', (err, output) => {
+    }).get('tupload', (err, output) => {
         if (err) {
             response.err({
                 message: err
@@ -82,7 +115,7 @@ exports.deleteUpload = (req, res) => {
                 var where = {
                     'id': req.params.tid
                 }
-                qb.where(where).delete('tuplod', (errNya, output) => {
+                qb.where(where).delete('tupload', (errNya, output) => {
                     if (errNya) {
                         response.err({
                             message: errNya
@@ -117,7 +150,7 @@ exports.createUpload = (req, res) => {
         var data = {
             image: req.file.filename,
         };
-        qb.insert('tuplod', data, (err, output) => {
+        qb.insert('tupload', data, (err, output) => {
             if (err) {
                 response.err({
                     message: err
