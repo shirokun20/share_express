@@ -1,0 +1,35 @@
+{
+  "name": "latihan_4",
+  "version": "0.0.1",
+  "description": "belajar menggunakan api sms gateway me",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shirokun20/share_express.git"
+  },
+  "keywords": [
+    "sms",
+    "gateway",
+    "me"
+  ],
+  "author": "Shirokun 20",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shirokun20/share_express/issues"
+  },
+  "homepage": "https://github.com/shirokun20/share_express#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "joi": "^14.3.1",
+    "md5": "^2.2.1",
+    "multer": "^1.4.1",
+    "node-querybuilder": "^1.2.2",
+    "request": "^2.88.0",
+    "unirest": "^0.5.1"
+  }
+}

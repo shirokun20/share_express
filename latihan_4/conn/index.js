@@ -3,7 +3,7 @@ var data = {
     host: "localhost",
     user: "root",
     password: "",
-    database: "sample",
+    database: "belajar",
 };
 
 var qb = require('node-querybuilder').QueryBuilder(data, 'mysql', 'single');

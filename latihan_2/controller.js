@@ -3,7 +3,13 @@ var response = require('./res');
 var qb = require('./conn');
 var Joi = require('joi');
 exports.users = (req, res) => {
-    qb.get('person', (err, output) => {
+    var sql = qb;
+        sql.select('*');
+    if (req.query.cari != null) {
+        sql.or_like('first_name', req.query.cari);
+        sql.or_like('last_name', req.query.cari);
+    }
+    sql.get('person', (err, output) => {
         if (err) {
             response.err({
                 message: 'terjadi error'
