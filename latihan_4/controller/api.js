@@ -13,7 +13,18 @@ exports.mengirim = (req, callback = null) => {
         "device_id": req.device_id
     }]).end(function(hasil) {
         if (callback != null) {
-          callback(hasil);
+            callback(hasil);
+        }
+    });
+}
+exports.infodevice = (req, callback = null) => {
+    api.get(link + 'device/' + req.device_id).headers({
+        "Postman-Token": "ce0a5563-a764-4e21-88ac-ecdb192be5ed",
+        "cache-control": "no-cache",
+        "Authorization": token
+    }).end(function(hasil) {
+        if (callback != null) {
+            callback(hasil);
         }
     });
 }
